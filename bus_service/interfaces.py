@@ -3,9 +3,6 @@ from datetime import date
 from decimal import Decimal
 from enum import Enum
 
-from bus_service.bus_service import Trip
-
-
 class IUser(ABC):
     """
     Basic interface for a user that can be superclass for
@@ -16,15 +13,17 @@ class IUser(ABC):
     def get_trips(self, trips: list["Trip"], sort_by: Enum) -> list["Trip"]:
         """
         This method should return list of available trips and provide opportunity to sort by:
-        - destination
         - amount of available seats
         - departure
+        - departure date
+        - arrival
         - arrival date
         - rating
 
         Any user (Unauthorized, Authorized, Superuser, etc.) can access this method.
 
-        :param trips: list of trips
+        :param trips: List of trips
+        :param sort_by: Parameter for sorting
         :return:
         """
         pass
@@ -81,11 +80,10 @@ class ITripManager(ABC):
         pass
 
     @abstractmethod
-    def approve_ticket_request(self, user: "User", ticket: "Ticket") -> None:
+    def approve_ticket_request(self, ticket: "Ticket") -> None:
         """
         Approve a ticket request.
 
-        :param user: A user that has requested a ticket.
         :param ticket: Requested ticket.
         :return: None
         """
@@ -99,22 +97,20 @@ class IBusManager(ABC):
     """
 
     @abstractmethod
-    def sell_ticket(self, user: "User", ticket: "Ticket") -> bool:
+    def sell_ticket(self, ticket: "Ticket") -> bool:
         """
         Sell this ticket if it was approved and seats amount is enough.
 
-        :param user: A user that has requested a ticket.
         :param ticket: Requested ticket.
         :return: bool
         """
         pass
 
     @abstractmethod
-    def refund_ticket(self, user: "User", ticket: "Ticket") -> bool:
+    def refund_ticket(self, ticket: "Ticket") -> bool:
         """
         Refund is only possible if ticket has actual date, amount of sold seats is greater than 0.
 
-        :param user: A user that has requested a refund.
         :param ticket: Requested ticket.
         :return: bool
         """
@@ -153,4 +149,7 @@ class ITrip(ABC):
         :return: float
         """
         pass
-    
+
+    @abstractmethod
+    def sell_seat(self, amount: int) -> bool:
+        pass
