@@ -56,7 +56,7 @@ def main():
 
     # selling ticket
     print("=========================================\nTicket example 0")
-    new_ticket_00 = Ticket(kyiv_poltava_trip, 2)
+    new_ticket_00 = kyiv_poltava_trip.create_ticket(seats_amount=1)
     user.request_ticket(new_ticket_00)
 
     trip_manager.approve_ticket_request(new_ticket_00)
@@ -68,7 +68,7 @@ def main():
     print(new_ticket_00)
     print("\n\nTicket example 1")
 
-    new_ticket_01 = Ticket(lviv_ternopil_trip, 5)
+    new_ticket_01 = lviv_ternopil_trip.create_ticket(seats_amount=5)
 
     user.request_ticket(new_ticket_01)
 
@@ -90,7 +90,7 @@ def main():
     trips.append(new_trip)
 
     print("without sorting:")
-    user.get_trips(trips)
+    user.get_trips(trips, sort_by=SortBy.DEPARTURE_DATE)
     print("\nwith arrival date sorting:")
     user.get_trips(trips, sort_by=SortBy.ARRIVAL_DATE)
 
